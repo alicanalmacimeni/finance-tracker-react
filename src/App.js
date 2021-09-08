@@ -70,14 +70,16 @@ export default function App() {
       .then(res => {
         let sumExpenses = 0, sumIncomes = 0, rates = res.data?.conversion_rates;
         let rows = JSON.parse(localStorage.getItem("finance-tracker"));
-        rows.forEach(el => {
-          if (el.activity === "Expense") {
-            sumExpenses += el.amount / rates[el.currency];
-          } else {
-            sumIncomes += el.amount / rates[el.currency];
-          }
-        });
-        setTotal({ ...total, expense: sumExpenses, income: sumIncomes });
+        if (rows) {
+          rows.forEach(el => {
+            if (el.activity === "Expense") {
+              sumExpenses += el.amount / rates[el.currency];
+            } else {
+              sumIncomes += el.amount / rates[el.currency];
+            }
+          });
+          setTotal({ ...total, expense: sumExpenses, income: sumIncomes });
+        }
       })
   }, [total.currency, rows])
 
